@@ -7,7 +7,6 @@
 <script>
   export default {
     mounted() {
-      console.log('New component mounted.')
     }
   }
 </script>

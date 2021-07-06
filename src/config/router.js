@@ -4,7 +4,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../components/pages/Login.vue'
 import Home from '../components/pages/Home.vue'
 import ParamGet from '../components/pages/ParamGet.vue'
+import Test from '../components/test/Test.vue'
 import NotFound from '../components/pages/NotFound.vue'
+import FormP from '../components/pages/FormP.vue'
+import Category from '../components/categories/CategoryForm.vue'
 
 // Importamos la tienda
 //import store from './store.js';
@@ -27,6 +30,21 @@ const routes = [
       path: '/user/:id',
       name: 'ParamGet',
       component: ParamGet
+    },
+    {
+      path: '/test',
+      name: 'Test',
+      component: Test
+    },
+    {
+      path: '/form',
+      name: 'FormP',
+      component: FormP
+    },
+    {
+      path: '/category',
+      name: 'Category',
+      component: Category
     },
     {
       path: '/:catchAll(.*)',
