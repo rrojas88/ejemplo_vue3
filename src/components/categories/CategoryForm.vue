@@ -38,7 +38,8 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
+import  { api } from '../../config/services.js'
 import CategoryGrid from './CategoryGrid.vue'
 
 const _category = {
@@ -60,11 +61,20 @@ export default {
     })
 
     let grid = ref([])
-    grid.value.push({id: 1, name: 'Categ 1', state: 'Activo'})
-    grid.value.push({id: 2, name: 'Categ dosss', state: 'Activo'})
+    //grid.value.push({id: 1, name: 'Categ 1', state: 'Activo'})
+    //grid.value.push({id: 2, name: 'Categ dosss', state: 'Activo'})
+    //grid = api.getCategorias()
+    //console.log('Categoriass....', grid)
+    watchEffect( async () => {
+      grid.value = await api.getCategorias()
+      console.log('Categoriasssss....', grid)
+      return { grid }
+    })
 
-    const save = () => {
+    const save = async () => {
       grid.value.push( category.value )
+      await api.postCategorias( grid.value )
+
       let categoryClean = _category
       category.value = categoryClean
     }
