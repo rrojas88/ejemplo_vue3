@@ -26,9 +26,11 @@
       </div>
     </form>
     {{category}}
+    <br />
+    {{ state.grid }}
     <hr />
     <CategoryGrid
-      :grid="grid"
+      :grid="state.grid"
       :edit="editP"
       :delete="deleteP"
     />
@@ -38,8 +40,14 @@
 </template>
 
 <script>
-import { ref, watchEffect } from 'vue'
-import  { api } from '../../config/services.js'
+import {
+ref, 
+reactive, 
+watchEffect, 
+onMounted,
+computed
+} from 'vue'
+import  { api, useGetCates } from '../../config/services.js'
 import CategoryGrid from './CategoryGrid.vue'
 
 const _category = {
@@ -54,6 +62,7 @@ export default {
     CategoryGrid,
   },
   setup() {
+    //let category = reactive({
     let category = ref({
       id: '',
       name: '',
@@ -61,17 +70,19 @@ export default {
     })
 
     let grid = ref([])
-    //grid.value.push({id: 1, name: 'Categ 1', state: 'Activo'})
-    //grid.value.push({id: 2, name: 'Categ dosss', state: 'Activo'})
-    //grid = api.getCategorias()
-    //console.log('Categoriass....', grid)
-    watchEffect( async () => {
-      grid.value = await api.getCategorias()
-      console.log('Categoriasssss....', grid)
-      return { grid }
+    //const state = reactive({ grid: [] })
+    const state = useGetCates()
+    
+    onMounted( async () => {
+      let data = await api.getCategorias()
+      console.log('montado ....', data )
+      //state.grid = data
+      grid.value = data
     })
 
     const save = async () => {
+      //state.grid.push( category )
+      //await api.postCategorias( state.grid )
       grid.value.push( category.value )
       await api.postCategorias( grid.value )
 
@@ -90,6 +101,7 @@ export default {
     return {
       category,
       grid,
+      state,
       save,
       editP,
       deleteP

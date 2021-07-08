@@ -1,4 +1,5 @@
 
+import { reactive, watch } from 'vue'
 // axios...
 
 export const api = {
@@ -17,3 +18,16 @@ export const api = {
     await localStorage.setItem('categorias', strData)
   }
 }
+
+export const useGetCates = () => {
+  const state = reactive({
+    grid: []
+  })
+  watch(
+    async () => {
+      const res = await localStorage.getItem('categorias')
+      let categorias = JSON.parse( res )
+      state.grid = categorias
+    });
+    return state;
+};

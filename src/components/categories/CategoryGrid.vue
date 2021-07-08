@@ -1,8 +1,9 @@
 <template>
   <div>
     <p>Grid Categorias.</p>
-
-    <!-- <pre>{{grid}}</pre> -->
+	
+     <pre>{{grid}}</pre>
+	<!-- -->
     <table>
       <thead>
         <tr>
@@ -32,20 +33,22 @@
 </template>
 
 <script>
-import { ref, onUpdated } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 export default {
   name: 'CategoryGrid',
   props:{
-    //save: {  type: Function }
     grid: { type: Array, default: [] },
     edit: { type: Function },
     delete: { type: Function },
   },
   setup( props ) {
-    let grid = ref([])
+    
+	let grid = ref( props.grid )
 
-    grid = props.grid
+	watchEffect( async () => {
+      console.log('watchEffect hijo: ', grid.value)
+    })
 
     const editRow = ( item ) => {
       console.log( 'Hijo: ', item )
