@@ -4,7 +4,7 @@
     <form >
       <div>
         <label for="id">Id</label>
-        <input type="number" name="id" size="5"
+        <input type="number" name="id" size="5" readonly
           v-model="category.id" />
       </div>
       <div>
@@ -22,15 +22,18 @@
       </div>
       <div>
         <button type="button"
-        @click="save"> Guardar </button>
+        @click="save"> Guardar </button> |
+        <button type="button"
+        @click="clean"> Limpiar </button>
       </div>
     </form>
     {{category}}
     <br />
-    {{ state.grid }}
+    <!--
+    {{ grid }} -->
     <hr />
     <CategoryGrid
-      :grid="state.grid"
+      :grid="grid"
       :edit="editP"
       :delete="deleteP"
     />
@@ -41,19 +44,20 @@
 
 <script>
 import {
-ref, 
-reactive, 
-watchEffect, 
+ref,
+reactive,
+watchEffect,
 onMounted,
 computed
 } from 'vue'
-import  { api, useGetCates } from '../../config/services.js'
+import  { api } from '../../config/services.js'
+import  { actions } from '../../config/store.js'
 import CategoryGrid from './CategoryGrid.vue'
 
 const _category = {
-  id: '',
+  id: 0,
   name: '',
-  state: ''
+  state: 'Activo'
 }
 
 export default {
@@ -64,45 +68,63 @@ export default {
   setup() {
     //let category = reactive({
     let category = ref({
-      id: '',
+      id: 0,
       name: '',
-      state: ''
+      state: 'Activo'
     })
 
     let grid = ref([])
-    //const state = reactive({ grid: [] })
-    const state = useGetCates()
-    
+
     onMounted( async () => {
-      let data = await api.getCategorias()
-      console.log('montado ....', data )
-      //state.grid = data
-      grid.value = data
+
     })
 
-    const save = async () => {
-      //state.grid.push( category )
-      //await api.postCategorias( state.grid )
-      grid.value.push( category.value )
-      await api.postCategorias( grid.value )
+    const getRandomArbitrary = (min, max) => {
+      return Math.floor(Math.random() * (max - min)) + min
+    }
 
-      let categoryClean = _category
+    const clean = () => {
+      let categoryClean = Object.assign({} , _category )
       category.value = categoryClean
     }
 
-    const editP = (item) => {
-      console.log('Padre Editara: ', item)
-      category.value = item
+    const save = async () => {
+      let row = Object.assign({} , category.value)
+      if( row.id == 0 ){
+        const id = getRandomArbitrary(1, 1000)
+        row.id = id
+        actions.categorias.grid.add( row )
+      }else{
+        actions.categorias.grid.put( row )
+      }
+      const data = actions.categorias.grid.get()
+      await api.postCategorias( data )
+
+      let categoryClean = Object.assign({} , _category )
+      category.value = categoryClean
     }
-    const deleteP = (id) => {
-      console.log('Borrara ID: ', id)
+
+    const editP = ( item, indx ) => {
+      //console.log('Padre reg-editar: ', item)
+      let row = Object.assign({} , item )
+      category.value = row
+    }
+    const deleteP = async ( id, indx ) => {
+      actions.categorias.grid.del( indx )
+
+      // Actualizar en el Server :
+      const data = actions.categorias.grid.get()
+      await api.postCategorias( data )
+
+      let categoryClean = Object.assign({} , _category )
+      category.value = categoryClean
     }
 
     return {
       category,
       grid,
-      state,
       save,
+      clean,
       editP,
       deleteP
     }

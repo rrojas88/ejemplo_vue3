@@ -1,9 +1,9 @@
 <template>
   <div>
     <p>Grid Categorias.</p>
-	
+<!--
      <pre>{{grid}}</pre>
-	<!-- -->
+	 -->
     <table>
       <thead>
         <tr>
@@ -21,9 +21,9 @@
           <td>{{item.name}}</td>
           <td>{{item.state}}</td>
           <td>{{item.id}}
-            <button type="button" @click="editRow(item)" >
+            <button type="button" @click="edit(item, index)" >
               Editar</button>
-            <button type="button" @click="deleteRow(index)" >
+            <button type="button" @click="deleteRow(item.id, index)" >
               Borrar</button>
           </td>
         </tr>
@@ -33,7 +33,9 @@
 </template>
 
 <script>
-import { ref, watchEffect } from 'vue'
+import { ref, onMounted, watchEffect } from 'vue'
+import  { api } from '../../config/services.js'
+import  { actions } from '../../config/store.js'
 
 export default {
   name: 'CategoryGrid',
@@ -43,26 +45,27 @@ export default {
     delete: { type: Function },
   },
   setup( props ) {
-    
-	let grid = ref( props.grid )
 
-	watchEffect( async () => {
-      console.log('watchEffect hijo: ', grid.value)
+    let grid = ref([])
+
+    onMounted( async () => {
+      let data = await api.getCategorias()
+      actions.categorias.grid.set( data )
     })
 
-    const editRow = ( item ) => {
-      console.log( 'Hijo: ', item )
-      props.edit( item )
-    }
-    const deleteRow = ( indx ) => {
-      console.log( 'Hijo: ', indx )
-      props.delete( indx )
+	  watchEffect( async () => {
+      grid.value = actions.categorias.grid.get()
+      //console.log('watchEffect hijo: ', grid)
+    })
+
+    const deleteRow = ( id, indx ) => {
+      props.delete( id, indx )
     }
 
     return {
       grid,
       deleteRow,
-      editRow,
+
     }
   }
 }

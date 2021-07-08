@@ -10,7 +10,7 @@ export const api = {
     }else{
       categorias = JSON.parse( categorias )
     }
-    console.log('Api cates: ', categorias)
+    //console.log('Api cates: ', categorias)
     return categorias
   },
   postCategorias: async ( data ) => {
