@@ -8,6 +8,7 @@ import Test from '../components/test/Test.vue'
 import NotFound from '../components/pages/NotFound.vue'
 import FormP from '../components/pages/FormP.vue'
 import Category from '../components/categories/CategoryForm.vue'
+import Tablas from '../components/tablas/Tablas.vue'
 
 // Importamos la tienda
 //import store from './store.js';
@@ -45,6 +46,11 @@ const routes = [
       path: '/category',
       name: 'Category',
       component: Category
+    },
+    {
+      path: '/tablas',
+      name: 'Tablas',
+      component: Tablas
     },
     {
       path: '/:catchAll(.*)',

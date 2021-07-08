@@ -8,7 +8,8 @@
     <router-link to="/test">Tests</router-link>
     <br />
     <router-link to="/form">Form</router-link>  |
-    <router-link to="/category">Categ</router-link>
+    <router-link to="/category">Categ</router-link> |
+    <router-link to="/tablas">tablas</router-link>
     <!--
     <router-link to="/about">About</router-link>-->
   </div>

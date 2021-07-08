@@ -1,9 +1,6 @@
 <template>
   <div>
     <p>Grid Categorias.</p>
-<!--
-     <pre>{{grid}}</pre>
-	 -->
     <table>
       <thead>
         <tr>
@@ -55,7 +52,6 @@ export default {
 
 	  watchEffect( async () => {
       grid.value = actions.categorias.grid.get()
-      //console.log('watchEffect hijo: ', grid)
     })
 
     const deleteRow = ( id, indx ) => {
@@ -65,7 +61,6 @@ export default {
     return {
       grid,
       deleteRow,
-
     }
   }
 }

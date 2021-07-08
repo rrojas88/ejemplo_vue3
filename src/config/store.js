@@ -1,5 +1,6 @@
 
 import { reactive } from 'vue'
+import { mods } from './stores/stores.js'
 
 export const regs = {
   categoria: {
@@ -10,11 +11,10 @@ export const regs = {
 }
 
 const state = reactive({
-  categorias: {
-    grid: [],
-    msGrid:[],
-    reg: {}
-  }
+  categorias: mods.categorias,
+  tablas: mods.tablas,
+  tabla: mods.tabla,
+  columna: mods.columna,
 })
 
 export const actions = {//stor
@@ -55,5 +55,18 @@ export const actions = {//stor
         }
       },
     }
+  },
+  tabla: {
+    get: () => { return state.tabla },
+    set: ( data ) => { state.tabla = data },
+  },
+  columna: {
+    get: () => { return state.columna },
+    set: ( data ) => { state.columna = data },
   }
 }
+
+
+
+
+//...

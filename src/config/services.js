@@ -1,6 +1,6 @@
 
 import { reactive, watch } from 'vue'
-// axios...
+// axi...
 
 export const api = {
   getCategorias: async ( ) => {
@@ -18,6 +18,23 @@ export const api = {
     await localStorage.setItem('categorias', strData)
   }
 }
+
+export const tablas = [
+  {
+    'tabla1': [
+      { 'nombre': 'id', tipo: 'int', extra: 'not null' },
+      { 'nombre': 'name', tipo: 'text', extra: 'not null' },
+      { 'nombre': 'price', tipo: 'int', extra: 'null' },
+    ]
+  },
+  {
+    'cates': [
+      { 'nombre': 'id', tipo: 'int', extra: 'not null' },
+      { 'nombre': 'name', tipo: 'text', extra: 'not null' },
+      { 'nombre': 'state', tipo: 'text', extra: 'null' },
+    ]
+  }
+]
 
 export const useGetCates = () => {
   const state = reactive({
